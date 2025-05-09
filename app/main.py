@@ -12,7 +12,7 @@ def get_weather() -> None:
     params = {
         "q": "Paris",
         "appid": api_key,
-        "units": "metric",  # або "imperial" для Fahrenheit
+        "units": "metric",
     }
 
     try:
@@ -23,10 +23,13 @@ def get_weather() -> None:
         return
 
     data = response.json()
-    temp = data["main"]["temp"]
-    description = data["weather"][0]["description"]
-    print(f"Current weather in Paris: {temp}°C, {description}")
 
+    if 'main' in data and 'weather' in data and len(data['weather']) > 0:
+        temp = data["main"]["temp"]
+        description = data["weather"][0]["description"]
+        print(f"Current weather in Paris: {temp}°C, {description}")
+    else:
+        print("Error: Invalid API response. 'main' or 'weather' not found.")
 
 if __name__ == "__main__":
     get_weather()
